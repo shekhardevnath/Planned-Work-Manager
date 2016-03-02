@@ -1,0 +1,43 @@
+      		<table width="100%" cellspacing="1" cellpadding="1" border="0">
+                <tbody>
+      			<tr bgcolor="#7C93F4">
+      				<th align="center" width="7%"><b>PW Date</b></th>
+      				<th align="center"><b>A_Text</b></th>
+      				<th align="center"><b>B_Text</b></th>
+      				<th align="center"><b>Outage</b></th>
+      				<th align="center"><b>Status</b></th>
+      				<th align="center"><b>Initiator Group</b></th>
+      				<th align="center"><b>Executor Group</b></th>
+      				<th align="center"><b>Type</b></th>
+      			</tr>
+
+                 {foreach from=$report_data_list key=key item=obj}
+      			  <tr {if $key%2 eq 0} bgcolor="#EEEEEE" {else} bgcolor="#EEFFEE" {/if}>
+                      <td>
+                             {$obj->pw_date}
+                      </td>
+                      <td>
+                             {$obj->a_text|stripslashes}
+                      </td>
+                      <td>
+                             {$obj->b_text|stripslashes}
+                      </td>
+                      <td>
+                             {$obj->outage_flag}
+                      </td>
+                      <td>
+                             {$obj->status}
+                      </td>
+                      <td>
+                             {$obj->initiator}
+                      </td>
+                      <td>
+                             {$obj->executor}
+                      </td>
+                      <td>
+                             {$obj->severity}
+                      </td>
+                 </tr>
+                {/foreach}
+             </tbody>
+      </table>

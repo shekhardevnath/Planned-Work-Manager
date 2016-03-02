@@ -1,0 +1,167 @@
+<link rel="stylesheet" href="/nm_tx/ext/calender/calendar.css?random=20051112" media="screen"></link>
+<script language="JavaScript" src="/nm_tx/ext/calender/calendar.js?random=20060118"></script>
+<script language="JavaScript" type="text/javascript" src="/nm_tx/ext/prototype/prototype.js"></script>
+<body>
+   <!--start main contents table-->
+   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+     <tr>
+         <td align="right" width="10" height="10"><img src="/nm_tx/common/image/table/top_lft.gif"></td>
+         <td background="/nm_tx/common/image/table/top_mid.gif"></td>
+         <td align="left" width="10" height="10"><img src="/nm_tx/common/image/table/top_rht.gif"></td>
+     </tr>
+     <tr>
+         <td align="right" width="10" background="/nm_tx/common/image/table/lft_border.gif"></td>
+         <td bgcolor="#FFFFFF" align="left" class="contentArea">
+            <table border="0" width="100%">
+               <tr align="center">
+                 <td bgcolor="#558ED5" style="height:25px"><font size="2" color="white"><b>Network Service Incident</b></font></td>
+               </tr>
+               <tr>
+      	         <td>
+      	           <!--SMS send application stars here-->
+      	           <form name="sendSMSForm" action="{$SCRIPT_NAME}" method="POST" enctype="multipart/form-data" onSubmit="return doSubmit(this);">
+	                 <input type="hidden" name="cmd" value="save_and_sms">
+	                 <input type="hidden" name="cr_ref" value="{$cr_ref}">
+	                 <input type="hidden" name="pw_no" value="{$pw_no}">
+                     <table  border="0" cellspacing="1" cellpadding="5" width="100%">
+               	         <tr align="right" height="10px;" bgcolor="#F8F8F8">
+                            <td colspan="5">
+                               <table width="100%">
+                                  <tr align="center">
+                   	 	               <td >&nbsp;</td>
+                   	 	               <td >&nbsp;</td>
+                   	 	               <td >&nbsp;</td>
+                   	 	               <td >&nbsp;</td>
+                   	 	               <td >&nbsp;</td>
+            	 	                   <td bgcolor="#00FF00" width="5%">New</td>
+                                       <td bgcolor="#BBAAFF" width="10%">Accept & Active</td>
+                                       <td bgcolor="red" width="5%">Rejected</td>
+                                       <td bgcolor="gray" width="5%">Expired</td>
+                                  </tr>
+                               </table>
+                            </td>
+          	              </tr>
+                          <tr height="310px;" valign="top">
+                  	          <td colspan="5">
+                   	  	          <div style="height:300px;overflow:scroll;width:100%;position:absolute;">
+                    	  	         <table border="0" width="100%" id="all_cr_tbl">
+                      	  	  	         <tr bgcolor="#F8F8F8" id="cr_list_header">
+                                           <th>Ref No</th>
+                                           <th>Department</th>
+                                           <th>CR Status</th>
+                                           <th>Job Type</th>
+                                           <th>Affected NE</th>
+                                           <th>Description</th>
+                                           <th>Start Time</th>
+                                           <th>End Time</th>
+                                           <th>Down Time</th>
+                                           <th>Reason/Justification</th>
+                                           <th>Possible Risk</th>
+                                           <!--th>Information Pass to</th-->
+                                           <th>Prepared by</th>
+                                           <th>Execute by</th>
+                                           <th>Prepare Time</th>
+                                           <th>BO Comments</th>
+                                           <th>Information to</th>
+                                      </tr>
+                                      {foreach from=$cr_list key=key item=obj}
+                                      <tr {if $obj->nmstat eq ''} bgcolor="#00FF00" {elseif $obj->nmstat eq 'Expired'} bgcolor="gray" {elseif $obj->nmstat eq 'Accepted'} bgcolor="#BBAAFF" {elseif $obj->nmstat eq 'Rejected'} bgcolor="red" {else} bgcolor="#F8F8F8" {/if} onmouseover="changeBGcolour(this);" onclick="showThisCR(this);" onmouseout="setPreviousColor(this);">
+                                          <td>{$obj->refno} </td>
+                                          <td>{$obj->dept} </td>
+                                          <td>{$obj->nmstat} </td>
+                                          <td>{$obj->worktype} </td>
+                                          <td>{$obj->NE_Name} </td>
+                                          <td>{$obj->Description} </td>
+                                          <td>{$obj->Start_Time} </td>
+                                          <td>{$obj->End_Time} </td>
+                                          <td>{$obj->Down_Time} </td>
+                                          <td>{$obj->Reason} </td>
+                                          <td>{$obj->Risk} </td>
+                                          <td>{$obj->Prepared} </td>
+                                          <td>{$obj->Executed} </td>
+                                          <td>{$obj->Prepare_Time} </td>
+                                          <td>{$obj->nmcom} </td>
+                                          <td>{$obj->InformTo} </td>
+                                      </tr>
+                                      {/foreach}
+                    	  	         </table>
+                 	  	            </div>
+                  	          </td>
+                          </tr>
+                          
+                          <tr>
+                              <td align="left" class="label">
+                                   <fieldset style="height:100%" class="fieldset">
+                                         <table>
+                                          	  <tr>
+                                               	  <td>Reference No<br /><input type="text" name="ref" value="{$ref_no}" id="refno_btm"></td>
+                                                  <td>CR Stgatus<br />
+                                                       <select name="nmstat" id="nmstat">
+                                                           <option value="Accepted">Accepted</option>
+                                                           <option value="Rejected">Rejected</option>
+                                                           <option value="Proposed New Time">Proposed New Time</option>
+                                                       </select>
+                                                  </td>
+                    	  	                      <td>Information Pass to<br /><input type="text" name="InformTo" value="{$InformTo}" id="info_pass_btm"></td>
+                                         	  	  <td>Comment(if any)<br /><input type="text" name="nmcom" value="{$nmcom}" id="comment_btm"></td>
+                                        	  	  <td width="50%">&nbsp<br /> <a href="{$SCRIPT_NAME}">Show me all Change Request</a></td>
+                                              </tr>
+                                              <tr>
+                    	  	                      <td colspan="5">
+                    	  	  	                     <input type="radio" name="tag[0]">Affected NE
+                    	  	  	                     <input type="radio" name="tag[1]">Description
+                    	  	  	                     <input type="radio" name="tag[2]">Job Type
+                    	  	  	                     <input type="radio" name="tag[3]">Department<br />
+                    	  	  	                     <input type="text" name="which_one" size="57">  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                     <input type="button" value="Update Database" onclick="submitForm2UpdateCR();">
+                                                     <input type="hidden" name="refno" value="" id="refno">
+                   	  	                         </td>
+                   	                         </tr>
+                                         </table>
+                                   </fieldset>
+                              </td>
+                          </tr>
+
+                          <tr height="5px;" bgcolor="#F8F8F8"><td colspan="3">&nbsp</td></tr>
+                          <tr bgcolor="#F8F8F8">
+                            <td colspan="3">
+                               <table width="100%">
+                                 <tr>
+                                    <td>
+                                       <textarea name="cr_details_view" rows="30" cols="100"  id="cr_details_div"></textarea>
+                                    </td>
+                                    <td><input type="button" value=">>" onclick="getToPwPage();"></td>
+                                    <td valign="top" width="48%">
+                                      <div>
+                                      <!--textarea name="pw_details_view" rows="30" cols="100"  id="pw_details_view"-->
+                                         {foreach from=$pw_list key=key item=obj}
+                                            {$obj->pw_sms}<br />
+                                            <b>SMS To</b>: {$obj->pw_smsto}
+                                            <br /><br />
+                                         {/foreach}
+                                      <!--/textarea-->
+                                      </div>
+                                    </td>
+                                 </tr>
+                               </table>
+                            </td>
+                          </tr>
+                     </table>
+      	           </form>
+      	         </td>
+               </tr>
+      	    </table>
+      	  <!--SMS send application ends here-->
+      	</td>
+      </tr>
+      
+      <tr>
+        <td align="left" width="10" background="/nm_tx/common/image/table/rht_border.gif" colspan="3"></td>
+      </tr>
+      <tr>
+         <td align="right" width="10" height="10"><img src="/nm_tx/common/image/table/bttm_lft.gif"></td>
+         <td background="/nm_tx/common/image/table/bttm_mid.gif"></td>
+         <td align="left" width="10" height="10"><img src="/nm_tx/common/image/table/bttm_rht.gif"></td>
+      </tr>
+   </table>
+</body>
